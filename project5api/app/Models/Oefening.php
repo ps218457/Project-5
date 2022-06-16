@@ -9,7 +9,8 @@ class Oefening extends Model
 {
     use HasFactory;
 
-
+    protected $table = "oefening";
+    public $timestaps = false;
     protected $fillable = [
         'naam','beschrijving', 'foto',
     ];

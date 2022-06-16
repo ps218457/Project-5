@@ -13,7 +13,7 @@ class OefeningController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Log::build([
             'driver' => 'single',
@@ -41,12 +41,7 @@ class OefeningController extends Controller
      */
     public function store(Request $request)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een nieuwe oefening toevoegen');
-
-        return Oefening::create($request->all());
+        //
     }
 
     /**
@@ -85,14 +80,7 @@ class OefeningController extends Controller
      */
     public function update(Request $request, Oefening $oefening)
     {
-
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een oefening updaten');
-
-        $oefening->update($request->all());
-        return $oefening;  
+        //
     }
 
     /**
@@ -103,12 +91,6 @@ class OefeningController extends Controller
      */
     public function destroy(Oefening $oefening)
     {
-
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een oefening verwijderen');
-        
-        $oefening->delete(); 
+//
     }
 }

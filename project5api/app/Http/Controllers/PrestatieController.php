@@ -14,14 +14,14 @@ class PrestatieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Log::build([
             'driver' => 'single',
             'path' => storage_path('logs/api.log'),
           ])->info('hier laten we een lijst zien met alle prestaties');
 
-          return Prestatie::all();
+          return Prestatie::where('user_id', $request->User)->get();
     }
 
     /**

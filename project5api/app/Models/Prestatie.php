@@ -9,6 +9,8 @@ class Prestatie extends Model
 {
     use HasFactory;
 
+    protected $table = "prestatie";
+    public $timestaps = false;
     protected $fillable = [
         'Datum','Starttijd', 'Eindtijd', 'Aantal',
     ];

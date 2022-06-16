@@ -18,8 +18,8 @@ class Prestatie extends Migration
             $table->bigInteger('User_id');
             $table->bigInteger('oefening_id');
             $table->date('Datum');
-            $table->date('Starttijd');
-            $table->date('Eindtijd');
+            $table->time('Starttijd');
+            $table->time('Eindtijd');
             $table->timestamps();
             $table->bigInteger('aantal');
         });
