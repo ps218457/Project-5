@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Prestatie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class PrestatieController extends Controller
 {
@@ -14,7 +16,12 @@ class PrestatieController extends Controller
      */
     public function index()
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+          ])->info('hier laten we een lijst zien met alle prestaties');
+
+          return Prestatie::all();
     }
 
     /**
@@ -24,7 +31,7 @@ class PrestatieController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -35,7 +42,12 @@ class PrestatieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een nieuwe prestatie toevoegen');
+
+        return Prestatie::create($request->all());
     }
 
     /**
@@ -46,7 +58,12 @@ class PrestatieController extends Controller
      */
     public function show(Prestatie $prestatie)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een prestatie zien');
+
+        return $prestatie;
     }
 
     /**
@@ -69,7 +86,13 @@ class PrestatieController extends Controller
      */
     public function update(Request $request, Prestatie $prestatie)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een prestatie updaten');
+
+        $prestatie->update($request->all());
+        return $prestatie; 
     }
 
     /**
@@ -80,6 +103,11 @@ class PrestatieController extends Controller
      */
     public function destroy(Prestatie $prestatie)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een prestatie verwijderen');
+        
+        $prestatie->delete(); 
     }
 }

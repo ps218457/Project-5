@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Prestatie extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'Datum','Starttijd', 'Eindtijd', 'Aantal',
+    ];
 }
