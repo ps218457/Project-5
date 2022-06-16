@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oefening;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class OefeningController extends Controller
@@ -14,7 +15,12 @@ class OefeningController extends Controller
      */
     public function index()
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+          ])->info('hier laten we een lijst zien met alle oefeningen');
+
+          return Oefening::all();
     }
 
     /**
@@ -35,7 +41,12 @@ class OefeningController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een nieuwe oefening toevoegen');
+
+        return Oefening::create($request->all());
     }
 
     /**
@@ -46,7 +57,12 @@ class OefeningController extends Controller
      */
     public function show(Oefening $oefening)
     {
-        //
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een oefening zien');
+
+        return $oefening;
     }
 
     /**
@@ -69,7 +85,14 @@ class OefeningController extends Controller
      */
     public function update(Request $request, Oefening $oefening)
     {
-        //
+
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een oefening updaten');
+
+        $oefening->update($request->all());
+        return $oefening;  
     }
 
     /**
@@ -80,6 +103,12 @@ class OefeningController extends Controller
      */
     public function destroy(Oefening $oefening)
     {
-        //
+
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/api.log'),
+        ])->info('hier laten we een oefening verwijderen');
+        
+        $oefening->delete(); 
     }
 }
