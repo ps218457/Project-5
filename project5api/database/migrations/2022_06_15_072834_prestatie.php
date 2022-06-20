@@ -15,13 +15,13 @@ class Prestatie extends Migration
     {
         Schema::create('prestatie', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('User_id');
-            $table->bigInteger('oefening_id');
+            $table->Integer('User_id');
+            $table->Integer('oefening_id');
             $table->date('Datum');
             $table->time('Starttijd');
             $table->time('Eindtijd');
             $table->timestamps();
-            $table->bigInteger('aantal');
+            $table->Integer('aantal');
         });
     }
 
