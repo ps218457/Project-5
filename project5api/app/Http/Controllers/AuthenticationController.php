@@ -11,7 +11,7 @@ class AuthenticationController extends Controller
 {
     public function register(Request $request)
     {
-        Log::channel('User')->info('registeren', ['ip' => $request->ip(),'data' => $request->all()]);
+        Log::channel('APi')->info('registeren', ['ip' => $request->ip(),'data' => $request->all()]);
 
         $attr = $request->validate([
             'name' => 'required|string|max:255',
@@ -32,7 +32,7 @@ class AuthenticationController extends Controller
 
     {
 
-        Log::channel('User')->info('Login', ['ip' => $request->ip(),'data' => $request->all()]);
+        Log::channel('APi')->info('Login', ['ip' => $request->ip(),'data' => $request->all()]);
         $attr = $request->validate([
             'email' => 'required|string|email|',
             'password' => 'required|string|min:6'

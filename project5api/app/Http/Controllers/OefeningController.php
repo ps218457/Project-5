@@ -15,12 +15,33 @@ class OefeningController extends Controller
      */
     public function index(Request $request)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-          ])->info('hier laten we een lijst zien met alle oefeningen');
+        try{
+            Log::channel('APi')->info('hier laten we een lijst zien met alle oefeningen');
+            $data = Oefening::all();
+            $message = 'Lijst met alle oefeningen opgehaald';
+            $content = [
+                'success' => true,
+                'data'    => $data,
+                'message' => $message,
+            ];
+            return response()->json($content, 200);
 
-          return Oefening::all();
+
+        }
+        catch(\Exception $e){
+
+            Log::channel('APi')->error('Fout bij het ophalen van de oefeningen: ' . $e->getMessage());
+
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het ophalen van de oefeningen',
+
+            ];
+            return response()->json($content, 500);
+
+        }
+      
     }
 
     /**
@@ -52,12 +73,6 @@ class OefeningController extends Controller
      */
     public function show(Oefening $oefening)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een oefening zien');
-
-        return $oefening;
     }
 
     /**

@@ -104,7 +104,7 @@ namespace SummaMoveAdmin.Models
 
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "SELECT * FROM oefening WHERE id = @ID ";
+                sql.CommandText = "SELECT * FROM oefeningwpf WHERE id = @ID ";
                 sql.Parameters.AddWithValue("@ID", ID);
                 MySqlDataReader reader = sql.ExecuteReader();
                 DataTable table = new DataTable();
@@ -143,7 +143,7 @@ namespace SummaMoveAdmin.Models
             {
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "SELECT * FROM oefening";
+                sql.CommandText = "SELECT * FROM oefeningwpf";
                 MySqlDataReader reader = sql.ExecuteReader();
                 DataTable table = new DataTable();
                 table.Load(reader);
@@ -185,7 +185,7 @@ namespace SummaMoveAdmin.Models
             {
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "SELECT users.id, users.name, prestatie.id , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM users INNER JOIN prestatie on prestatie.User_id = users.id INNER JOIN oefening ON oefening.id = prestatie.oefening_id";
+                sql.CommandText = "SELECT users.id, users.name, prestatie.id , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefeningwpf.id ,oefeningwpf.naam FROM users INNER JOIN prestatie on prestatie.User_id = users.id INNER JOIN oefeningwpf ON oefeningwpf.id = prestatie.oefening_id";
                
                 MySqlDataReader reader = sql.ExecuteReader();
                 DataTable table = new DataTable();
@@ -232,7 +232,7 @@ namespace SummaMoveAdmin.Models
             {
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "SELECT users.id, users.name, prestatie.id , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM users INNER JOIN prestatie on prestatie.User_id = users.id INNER JOIN oefening ON oefening.id = prestatie.oefening_id WHERE prestatie.Datum = @Datum ";
+                sql.CommandText = "SELECT users.id, users.name, prestatie.id , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefeningwpf.id ,oefeningwpf.naam FROM users INNER JOIN prestatie on prestatie.User_id = users.id INNER JOIN oefeningwpf ON oefeningwpf.id = prestatie.oefening_id WHERE prestatie.Datum = @Datum ";
                 sql.Parameters.AddWithValue("@Datum", Datum);
 
                 MySqlDataReader reader = sql.ExecuteReader();
@@ -368,7 +368,7 @@ namespace SummaMoveAdmin.Models
 
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "SELECT* FROM `oefening` WHERE `naam` LIKE '%" + Zoek + "%' ";
+                sql.CommandText = "SELECT* FROM `oefeningwpf` WHERE `naam` LIKE '%" + Zoek + "%' ";
                 MySqlDataReader reader = sql.ExecuteReader();
                 DataTable table = new DataTable();
                 table.Load(reader);
@@ -405,77 +405,7 @@ namespace SummaMoveAdmin.Models
 
         #region Insert
 
-        //public bool InsertEmployees(string First_name, string Last_name, string Address, string Phone, string Zipcode, string City, string Personal_email, DateTime Birth_date, string Burger_service_nummer, string Password, int Roles)
-        //{
-        //    bool result = false;
-        //    try
-        //    {
-        //        conn.Open();
-        //        MySqlCommand sql = conn.CreateCommand();
-        //        sql.CommandText = "INSERT INTO `employees`( `first_name`, `last_name`, `address`, `phone`, `zipcode`, `city`,`personal_email`, `birth_date`, `burger_service_nummer`) " +
-        //            "VALUES(@First_name , @Last_name , @Address , @Phone , @Zipcode , @City , @Personal_email , @Birth_date , @Burger_service_nummer)";
-        //        sql.Parameters.AddWithValue("@First_name", First_name);
-        //        sql.Parameters.AddWithValue("@Last_name", Last_name);
-        //        sql.Parameters.AddWithValue("@Address", Address);
-        //        sql.Parameters.AddWithValue("@Phone", Phone);
-        //        sql.Parameters.AddWithValue("@Zipcode", Zipcode);
-        //        sql.Parameters.AddWithValue("@City", City);
-        //        sql.Parameters.AddWithValue("@Personal_email", Personal_email);
-        //        sql.Parameters.AddWithValue("@Birth_date", Birth_date);
-        //        sql.Parameters.AddWithValue("@Burger_service_nummer", Burger_service_nummer);
-
-
-        //        result = sql.ExecuteNonQuery() == 1;
-        //        if (result == true)
-        //        {
-        //            result = false;
-        //            sql.CommandText = "INSERT INTO `users`(`name`, `email`, `password`) VALUES (@name , @email ,@Password )";
-        //            sql.Parameters.AddWithValue("@name", First_name);
-        //            sql.Parameters.AddWithValue("@email", Personal_email);
-        //            sql.Parameters.AddWithValue("@Password", Password);
-        //            result = sql.ExecuteNonQuery() == 1;
-        //        }
-        //        if (result == true)
-        //        {
-        //            result = false;
-        //            sql.CommandText = "SELECT `id` FROM `users` WHERE email = @medewerkerEmail";
-        //            sql.Parameters.AddWithValue("@medewerkerEmail", Personal_email);
-        //            MySqlDataReader reader = sql.ExecuteReader();
-        //            DataTable table = new DataTable();
-        //            table.Load(reader);
-        //            ulong id = 0;
-        //            foreach (DataRow row in table.Rows)
-        //            {
-
-
-        //            }
-
-        //            //foreach (DataRow row in table.Rows)
-        //            //{
-
-        //            //}
-        //            sql.CommandText = "INSERT INTO `user_roles`( `user_id`, `role_id`) VALUES(@user_id ,@role_id )";
-        //            sql.Parameters.AddWithValue("@user_id", id);
-        //            sql.Parameters.AddWithValue("@role_id", Roles);
-        //            result = sql.ExecuteNonQuery() == 1;
-        //        }
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.Error.WriteLine(e.Message);
-        //        return false;
-        //    }
-        //    finally
-        //    {
-        //        if (conn.State == ConnectionState.Open)
-        //        {
-        //            conn.Close();
-        //        }
-        //    }
-        //    return result;
-        //}
-
+   
         public bool InsertUser(string Name, string Email, string Password)
         {
             bool result = false;
@@ -515,7 +445,7 @@ namespace SummaMoveAdmin.Models
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
                 sql.CommandText =
-                    "INSERT INTO oefening( naam , beschrijving , foto	 )" +
+                    "INSERT INTO oefeningwpf( naam , beschrijving , foto	 )" +
                     " VALUES(@Naam, @Beschrijving , @Foto)";
                 sql.Parameters.AddWithValue("@Naam", Naam);
                 sql.Parameters.AddWithValue("@Beschrijving", Beschrijving);
@@ -580,7 +510,7 @@ namespace SummaMoveAdmin.Models
             {
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
-                sql.CommandText = "UPDATE  oefening  SET  naam = @Naam , beschrijving = @Beschrijving , foto = @Foto  WHERE id  = @ID";
+                sql.CommandText = "UPDATE  oefeningwpf  SET  naam = @Naam , beschrijving = @Beschrijving , foto = @Foto  WHERE id  = @ID";
                 sql.Parameters.AddWithValue("@ID", ID);
                 sql.Parameters.AddWithValue("@naam", Naam);
                 sql.Parameters.AddWithValue("@beschrijving", Beschrijving);
@@ -612,6 +542,7 @@ namespace SummaMoveAdmin.Models
 
         public bool DeleteUsersById(int id)
         {
+            int ID = id;
             bool result = false;
             try
             {
@@ -622,6 +553,22 @@ namespace SummaMoveAdmin.Models
                 sql.Parameters.AddWithValue("@ID", id);
 
                 result = sql.ExecuteNonQuery() == 1;
+                if (result == true)
+                {
+                    try
+                    {
+                        sql.CommandText =
+                            " DELETE FROM prestatie WHERE  User_id = @ID";
+                        sql.Parameters.AddWithValue("@ID", ID);
+
+                        result = sql.ExecuteNonQuery() == 1;
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
             }
             catch (Exception e)
             {
@@ -646,7 +593,7 @@ namespace SummaMoveAdmin.Models
                 conn.Open();
                 MySqlCommand sql = conn.CreateCommand();
                 sql.CommandText =
-                    " DELETE FROM oefening WHERE  id = @ID";
+                    " DELETE FROM oefeningwpf WHERE  id = @ID";
                 sql.Parameters.AddWithValue("@ID", id);
 
                 result = sql.ExecuteNonQuery() == 1;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prestatie;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,12 +17,33 @@ class PrestatieController extends Controller
      */
     public function index(Request $request)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-          ])->info('hier laten we een lijst zien met alle prestaties');
+        try {
+            if ($request->has('User')) {
+                Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User);
+                $data =  Prestatie::where('user_id', $request->User)->get();
+                $message = 'Prestatie van de gebruiker met ID: ' . $request->User . 'opgehaald';
+            } else if ($request->has('User') && $request->has('Oefening')) {
+                Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User . ' en oefening met ID: ' . $request->Oefening);
+                $data = Prestatie::where('user_id', $request->User)->where('oefening_id', $request->Oefening)->get();
+                $message = 'Prestatie van de gebruiker met ID: ' . $request->User . ' en oefening met ID: ' . $request->Oefening . 'opgehaald';
+            }
+            $content = [
+                'success' => true,
+                'data'    => $data,
+                'message' => $message,
+            ];
+            return response()->json($content, 200);
+        } catch (\Exception $e) {
+            Log::channel('APi')->error('Fout bij het ophalen van Prestatie: ' . $e->getMessage());
 
-          return Prestatie::where('user_id', $request->User)->get();
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het ophalen van u Prestatie',
+
+            ];
+            return response()->json($content, 500);
+        }
     }
 
     /**
@@ -31,7 +53,6 @@ class PrestatieController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -42,12 +63,28 @@ class PrestatieController extends Controller
      */
     public function store(Request $request)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een nieuwe prestatie toevoegen');
 
-        return Prestatie::create($request->all());
+        try {
+            Log::channel('APi')->info('hier laten we een nieuwe prestatie toevoegen');
+            $data = Prestatie::create($request->all());
+            $message = "prestatie is toegevoegen";
+            $code = 200;
+            $content = [
+                'success' => true,
+                'data'    => $data,
+                'message' => $message
+            ];
+            return response()->json($content, $code);
+        } catch (\Exception $e) {
+            Log::channel('APi')->error('Fout bij het toevoegen van Prestatie: ' . $e->getMessage());
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het toevoegen van Prestatie'
+
+            ];
+            return response()->json($content, 500);
+        }
     }
 
     /**
@@ -58,12 +95,6 @@ class PrestatieController extends Controller
      */
     public function show(Prestatie $prestatie)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een prestatie zien');
-
-        return $prestatie;
     }
 
     /**
@@ -86,13 +117,31 @@ class PrestatieController extends Controller
      */
     public function update(Request $request, Prestatie $prestatie)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een prestatie updaten');
+        try {
+            Log::channel('APi')->info('hier laten we een prestatie updaten');
+            $prestatie->update($request->all());
+            $message = "prestatie is geupdate";
+            $content = [
+                'success' => true,
+                'data'    => $prestatie,
+                'message' => $message
+            ];
+            return response()->json($content, 200);
+        } catch (\Exception $e) {
+            Log::channel('APi')->error('Fout bij het updaten van Prestatie: ' . $e->getMessage());
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het updaten van Prestatie'
+
+            ];
+            return response()->json($content, 500);
+        }
+
+
 
         $prestatie->update($request->all());
-        return $prestatie; 
+        return $prestatie;
     }
 
     /**
@@ -101,13 +150,29 @@ class PrestatieController extends Controller
      * @param  \App\Models\Prestatie  $prestatie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Prestatie $prestatie)
+    public function destroy($id)
     {
-        Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/api.log'),
-        ])->info('hier laten we een prestatie verwijderen');
-        
-        $prestatie->delete(); 
+        try {  Log::channel('APi')->info('hier laten we een prestatie verwijderen');
+            $data = Prestatie::where('id',$id)->delete();
+            $message = "prestatie is verwijderd";
+            $content = [
+                'success' => true,
+                'data'    => $data,
+                'message' => $message
+            ];
+            return response()->json($content, 200);
+
+        } catch (\Exception $e) {
+            Log::channel('APi')->error('Fout bij het verwijderen van Prestatie: ' . $e->getMessage());
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het verwijderen van Prestatie'
+
+            ];
+            return response()->json($content, 500);
+
+        }
+
     }
 }
