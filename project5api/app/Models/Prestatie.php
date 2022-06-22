@@ -12,6 +12,6 @@ class Prestatie extends Model
     protected $table = "prestatie";
     public $timestaps = false;
     protected $fillable = [
-        'Datum','Starttijd', 'Eindtijd', 'Aantal',
+        'Datum','Starttijd', 'Eindtijd', 'aantal', 'User_id', 'oefening_id'
     ];
 }

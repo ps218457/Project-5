@@ -66,8 +66,24 @@ class PrestatieController extends Controller
 
         try {
             Log::channel('APi')->info('hier laten we een nieuwe prestatie toevoegen');
-            $data = Prestatie::create($request->all());
-            $message = "prestatie is toegevoegen";
+            $request->validate([
+                'Datum' => 'required',
+                'Starttijd' => 'required',
+                'Eindtijd' => 'required',
+                'aantal' => 'required',
+                'oefening_id' => 'required'
+            ]);
+
+            $data = Prestatie::create([
+                'Datum' => $request->Datum,
+                'Starttijd' => $request->Starttijd,
+                'Eindtijd' => $request->Eindtijd,
+                'aantal' => $request->aantal,
+                'oefening_id' => $request->oefening_id,
+                'User_id' => $request->user()->id
+            ]);
+
+            $message = "prestatie is toegevoegd";
             $code = 200;
             $content = [
                 'success' => true,
@@ -115,18 +131,20 @@ class PrestatieController extends Controller
      * @param  \App\Models\Prestatie  $prestatie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Prestatie $prestatie)
+    public function update(Request $request, Prestatie $prestatie, $id)
     {
         try {
             Log::channel('APi')->info('hier laten we een prestatie updaten');
+            $prestatie = Prestatie::find($id);
             $prestatie->update($request->all());
+            return $prestatie;
             $message = "prestatie is geupdate";
             $content = [
                 'success' => true,
                 'data'    => $prestatie,
                 'message' => $message
             ];
-            return response()->json($content, 200);
+            return response()->json($content, 300);
         } catch (\Exception $e) {
             Log::channel('APi')->error('Fout bij het updaten van Prestatie: ' . $e->getMessage());
             $content = [
@@ -152,8 +170,9 @@ class PrestatieController extends Controller
      */
     public function destroy($id)
     {
-        try {  Log::channel('APi')->info('hier laten we een prestatie verwijderen');
-            $data = Prestatie::where('id',$id)->delete();
+        try {
+            Log::channel('APi')->info('hier laten we een prestatie verwijderen');
+            $data = Prestatie::where('id', $id)->delete();
             $message = "prestatie is verwijderd";
             $content = [
                 'success' => true,
@@ -161,7 +180,6 @@ class PrestatieController extends Controller
                 'message' => $message
             ];
             return response()->json($content, 200);
-
         } catch (\Exception $e) {
             Log::channel('APi')->error('Fout bij het verwijderen van Prestatie: ' . $e->getMessage());
             $content = [
@@ -171,8 +189,6 @@ class PrestatieController extends Controller
 
             ];
             return response()->json($content, 500);
-
         }
-
     }
 }
