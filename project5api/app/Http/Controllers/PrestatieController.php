@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prestatie;
 use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
@@ -20,11 +21,11 @@ class PrestatieController extends Controller
         try {
             if ($request->has('User')) {
                 Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User);
-                $data =  Prestatie::where('user_id', $request->User)->get();
+                $data =  DB::select("SELECT prestatie.ID , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM prestatie INNER JOIN oefening ON oefening.id = prestatie.oefening_id WHERE User_id =?", [$request->User]);
                 $message = 'Prestatie van de gebruiker met ID: ' . $request->User . 'opgehaald';
             } else if ($request->has('User') && $request->has('Oefening')) {
                 Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User . ' en oefening met ID: ' . $request->Oefening);
-                $data = Prestatie::where('user_id', $request->User)->where('oefening_id', $request->Oefening)->get();
+                $data = DB::select("SELECT prestatie.ID , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM prestatie INNER JOIN oefening ON oefening.id = prestatie.oefening_id WHERE User_id =? AND WHERE  oefening_id =?", [$request->User ,$request->Oefening]);
                 $message = 'Prestatie van de gebruiker met ID: ' . $request->User . ' en oefening met ID: ' . $request->Oefening . 'opgehaald';
             }
             $content = [
