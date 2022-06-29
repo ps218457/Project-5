@@ -67,14 +67,7 @@ class PrestatieController extends Controller
 
         try {
             Log::channel('APi')->info('hier laten we een nieuwe prestatie toevoegen');
-            $request->validate([
-                'Datum' => 'required',
-                'Starttijd' => 'required',
-                'Eindtijd' => 'required',
-                'aantal' => 'required',
-                'oefening_id' => 'required'
-            ]);
-
+          
             $data = Prestatie::create([
                 'Datum' => $request->Datum,
                 'Starttijd' => $request->Starttijd,
@@ -138,7 +131,7 @@ class PrestatieController extends Controller
             Log::channel('APi')->info('hier laten we een prestatie updaten');
             $prestatie = Prestatie::find($id);
             $prestatie->update($request->all());
-            return $prestatie;
+            // return $prestatie;
             $message = "prestatie is geupdate";
             $content = [
                 'success' => true,

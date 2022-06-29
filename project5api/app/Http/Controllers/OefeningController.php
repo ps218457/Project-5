@@ -62,7 +62,28 @@ class OefeningController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            Log::channel('APi')->info('Maak een nieuwe Oefening aan');
+            $data = Oefening::create($request->all());
+
+            $message = "Oefening is aangemaakt";
+            $content = [
+                'success' => true,
+                'data'    => $data,
+                'message' => $message,
+            ];
+            return response()->json($content, 200);
+        }
+        catch (\Exception $e) {
+            Log::channel('APi')->error('Fout bij het aanmaken van de Oefening: ' . $e->getMessage());
+            $content = [
+                'success' => false,
+                'data'    => null,
+                'message' => 'Er is iets fout gegaan bij het aanmaken van de Oefening'
+            ];
+            return response()->json($content, 500);
+    }
     }
 
     /**
