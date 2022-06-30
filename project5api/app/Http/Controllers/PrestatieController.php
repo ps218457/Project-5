@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Prestatie;
 use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\DB;
 
 class PrestatieController extends Controller
 {
@@ -21,7 +20,7 @@ class PrestatieController extends Controller
         try {
             if ($request->has('User')) {
                 Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User);
-                $data =  DB::select("SELECT prestatie.ID , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM prestatie INNER JOIN oefening ON oefening.id = prestatie.oefening_id WHERE User_id =?", [$request->User]);
+                $data =   DB::select("SELECT prestatie.ID , prestatie.User_id , prestatie.oefening_id, prestatie.Datum , prestatie.Starttijd , prestatie.Eindtijd , prestatie.aantal , oefening.id ,oefening.naam FROM prestatie INNER JOIN oefening ON oefening.id = prestatie.oefening_id WHERE User_id =?", [$request->User]);
                 $message = 'Prestatie van de gebruiker met ID: ' . $request->User . 'opgehaald';
             } else if ($request->has('User') && $request->has('Oefening')) {
                 Log::channel('APi')->info('Haal Prestatie op van gebruiker met ID: ' . $request->User . ' en oefening met ID: ' . $request->Oefening);
@@ -67,7 +66,14 @@ class PrestatieController extends Controller
 
         try {
             Log::channel('APi')->info('hier laten we een nieuwe prestatie toevoegen');
-          
+            $request->validate([
+                'Datum' => 'required',
+                'Starttijd' => 'required',
+                'Eindtijd' => 'required',
+                'aantal' => 'required',
+                'oefening_id' => 'required'
+            ]);
+
             $data = Prestatie::create([
                 'Datum' => $request->Datum,
                 'Starttijd' => $request->Starttijd,
@@ -129,13 +135,14 @@ class PrestatieController extends Controller
     {
         try {
             Log::channel('APi')->info('hier laten we een prestatie updaten');
-            $prestatie = Prestatie::find($id);
-            $prestatie->update($request->all());
+            // $prestatie = Prestatie::find($id);
+            // $prestatie->update($request->all());
             // return $prestatie;
+            $data = DB::update("UPDATE prestatie SET Datum = ?, Starttijd = ?, Eindtijd = ?, aantal = ?, oefening_id = ? , User_id = ? WHERE ID = ?", [$request->Datum, $request->Starttijd, $request->Eindtijd, $request->aantal, $request->oefening_id, $request->User_id, $id]);
             $message = "prestatie is geupdate";
             $content = [
                 'success' => true,
-                'data'    => $prestatie,
+                'data'    => $data,
                 'message' => $message
             ];
             return response()->json($content, 300);

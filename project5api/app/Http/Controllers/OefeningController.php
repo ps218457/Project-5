@@ -16,9 +16,18 @@ class OefeningController extends Controller
     public function index(Request $request)
     {
         try{
-            Log::channel('APi')->info('hier laten we een lijst zien met alle oefeningen');
-            $data = Oefening::all();
-            $message = 'Lijst met alle oefeningen opgehaald';
+            if($request->has('ID')){
+                Log::channel('APi')->info('hier laten we een oefening zien');
+                $data = Oefening::find($request->ID);
+                $message = 'een  oefening opgehaald';
+
+            }
+            else{
+                Log::channel('APi')->info('hier laten we een lijst zien met alle oefeningen');
+                $data = Oefening::all();
+                $message = 'Lijst met alle oefeningen opgehaald';
+            }
+
             $content = [
                 'success' => true,
                 'data'    => $data,
@@ -41,7 +50,7 @@ class OefeningController extends Controller
             return response()->json($content, 500);
 
         }
-      
+
     }
 
     /**
@@ -84,7 +93,9 @@ class OefeningController extends Controller
             ];
             return response()->json($content, 500);
     }
-    }
+
+}
+
 
     /**
      * Display the specified resource.

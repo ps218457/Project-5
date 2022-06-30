@@ -29,6 +29,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthenticationController::class, 'logout']);
     Route::put('/prestaties/update/{id}',[PrestatieController::class, 'update']);
     Route::post('/prestaties/store', [PrestatieController::class,'store']);
+
+
     Route::apiResource('oefeningen', OefeningController::class)->only(['store']);
+
 });
 
